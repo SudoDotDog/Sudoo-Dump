@@ -14,6 +14,14 @@ export class Dump<T extends any> {
         return new Dump<T>(unique, initial);
     }
 
+    public static resetDefines(): void {
+
+        this._storageSaveFunction = undefined;
+        this._storageReadFunction = undefined;
+        this._asyncStorageSaveFunction = undefined;
+        this._asyncStorageReadFunction = undefined;
+    }
+
     public static defineStorage(save: StorageSaveFunction, read: StorageReadFunction): void {
 
         this._storageSaveFunction = save;
@@ -57,7 +65,11 @@ export class Dump<T extends any> {
 
         this._storageType = 'sync';
 
-        this._pile = JSON.parse((Dump._storageReadFunction as StorageReadFunction)(this._unique));
+        const content: string | undefined | null = (Dump._storageReadFunction as StorageReadFunction)(this._unique);
+        if (!content) {
+            return this;
+        }
+        this._pile = JSON.parse(content);
         return this;
     }
 
@@ -67,7 +79,10 @@ export class Dump<T extends any> {
 
         this._storageType = 'async';
 
-        const content: string = await (Dump._asyncStorageReadFunction as AsyncStorageReadFunction)(this._unique);
+        const content: string | undefined | null = await (Dump._asyncStorageReadFunction as AsyncStorageReadFunction)(this._unique);
+        if (!content) {
+            return this;
+        }
         this._pile = JSON.parse(content);
         return this;
     }
