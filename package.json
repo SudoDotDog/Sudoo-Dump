@@ -1,6 +1,6 @@
 {
   "name": "@sudoo/dump",
-  "version": "1.0.7",
+  "version": "1.0.0",
   "description": ":ear_of_rice: A Dump of things",
   "main": "index.js",
   "directories": {
@@ -16,7 +16,9 @@
     "url": "https://github.com/SudoDotDog/Sudoo-Dump/issues"
   },
   "homepage": "https://github.com/SudoDotDog/Sudoo-Dump#readme",
-  "dependencies": {},
+  "dependencies": {
+    "@sudoo/immutable": "^1.0.5"
+  },
   "devDependencies": {
     "@sudoo/io": "^1.6.1",
     "@sudoo/mock": "^1.2.0",

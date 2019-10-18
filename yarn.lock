@@ -23,6 +23,18 @@
   resolved "https://registry.yarnpkg.com/@sudoo/bark/-/bark-2.7.1.tgz#84b9db0be3aa7b4d6896ced81d9fa9aac96578ef"
   integrity sha512-0zBFbIQAtu3XNJkFPszdljYXXIPXzR63qypfTwFRupmu3gxgfBMtdPShbQebGuGG0KQEmXasGMBQVi2O0jWbbQ==
 
+"@sudoo/duplicate@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@sudoo/duplicate/-/duplicate-1.0.5.tgz#2ccd96c3cca233687652cafd6857c9b9eb796dc8"
+  integrity sha512-mlTZprBr7IAZZ5DVTRreimmA6o0RVR40ExcK3muuvi9BiovvulQv49IvWO1SdWYjjEsmaho9xpA1/ERhae7OBA==
+
+"@sudoo/immutable@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@sudoo/immutable/-/immutable-1.0.5.tgz#1bd833aecde08bfd1ed487e3c75e69fe13671d73"
+  integrity sha512-OtsqD8ttBhHPnRwJ2bK2ZI1/mFYaYZCHWF49MSVg7WkRuyqlEBedik1JqXQTwTKGaRZunG4mtMKQUWFmzpRjtg==
+  dependencies:
+    "@sudoo/duplicate" "^1.0.5"
+
 "@sudoo/io@^1.6.1":
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/@sudoo/io/-/io-1.6.1.tgz#d8d18d17ed61f36eafa6aa7e4b22562f2bd801a5"
