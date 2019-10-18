@@ -4,7 +4,7 @@
  * @description Dump
  */
 
-import { DraftFunction, Medium } from "@sudoo/immutable";
+import { AsyncDraftFunction, DraftFunction, Medium } from "@sudoo/immutable";
 
 export class Dump<T extends any> {
 
@@ -56,6 +56,12 @@ export class Dump<T extends any> {
     public produce(func: DraftFunction<T>): this {
 
         this._pile = this.medium().mutate(func);
+        return this;
+    }
+
+    public async asyncProduce(func: AsyncDraftFunction<T>): Promise<this> {
+
+        this._pile = await this.medium().asyncMutate(func);
         return this;
     }
 }
