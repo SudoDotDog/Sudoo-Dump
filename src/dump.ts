@@ -104,39 +104,36 @@ export class Dump<T extends any> {
             return this;
         }
 
-        this.replace(this._appendFunction(this._pile, append));
-        return this;
+        return this.replace(this._appendFunction(this._pile, append));
+    }
+
+    public produce(func: DraftFunction<T>): this {
+
+        return this.replace(this.medium().mutate(func));
+    }
+
+    public async asyncProduce(func: AsyncDraftFunction<T>): Promise<this> {
+
+        const newValue: T = await this.medium().asyncMutate(func);
+        return this.replace(newValue);
     }
 
     public replace(replace: T): this {
 
         this._pile = replace;
-        this._saveToStorage();
-        return this;
+        return this._saveToStorage(replace);
     }
 
-    public produce(func: DraftFunction<T>): this {
-
-        this._pile = this.medium().mutate(func);
-        return this;
-    }
-
-    public async asyncProduce(func: AsyncDraftFunction<T>): Promise<this> {
-
-        this._pile = await this.medium().asyncMutate(func);
-        return this;
-    }
-
-    private _saveToStorage(): this {
+    private _saveToStorage(newValue: T): this {
 
         if (this._storageType === 'sync') {
 
             this._verifyStorage();
-            (Dump._storageSaveFunction as StorageSaveFunction)(this._unique, JSON.stringify(this._pile));
+            (Dump._storageSaveFunction as StorageSaveFunction)(this._unique, JSON.stringify(newValue));
         } else if (this._storageType === 'async') {
 
             this._verifyAsyncStorage();
-            (Dump._asyncStorageSaveFunction as AsyncStorageSaveFunction)(this._unique, JSON.stringify(this._pile));
+            (Dump._asyncStorageSaveFunction as AsyncStorageSaveFunction)(this._unique, JSON.stringify(newValue));
         }
 
         return this;
