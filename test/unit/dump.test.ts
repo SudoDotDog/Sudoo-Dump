@@ -82,4 +82,28 @@ describe('Given {Dump} class', (): void => {
 
         expect(exec).to.be.throw("Undefined Storage Read Function");
     });
+
+    it('should be able to change modified status - 1', (): void => {
+
+        const value: string = chance.string();
+
+        const dump: Dump<string> = Dump.create(chance.string(), value);
+
+        expect(dump.value).to.be.equal(value);
+        // tslint:disable-next-line: no-unused-expression
+        expect(dump.modified).to.be.false;
+    });
+
+    it('should be able to change modified status - 1', (): void => {
+
+        const value: string = chance.string();
+        const newValue: string = chance.string();
+
+        const dump: Dump<string> = Dump.create(chance.string(), value);
+        dump.replace(newValue);
+
+        expect(dump.value).to.be.equal(newValue);
+        // tslint:disable-next-line: no-unused-expression
+        expect(dump.modified).to.be.true;
+    });
 });
