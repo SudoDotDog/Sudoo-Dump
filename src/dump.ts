@@ -42,6 +42,8 @@ export class Dump<T extends any> {
 
     private readonly _unique: string;
 
+    private _modified: boolean;
+
     private _pile: T;
     private _storageType: 'async' | 'sync' | null;
     private _appendFunction?: AppendFunction<T>;
@@ -51,12 +53,18 @@ export class Dump<T extends any> {
         this._unique = unique;
 
         this._pile = initial;
+        this._modified = false;
         this._storageType = null;
     }
 
     public get value(): T {
 
         return this._pile;
+    }
+
+    public get modified(): boolean {
+
+        return this._modified;
     }
 
     public useStorage(): this {
@@ -121,6 +129,9 @@ export class Dump<T extends any> {
     public replace(replace: T): this {
 
         this._pile = replace;
+        if (!this._modified) {
+            this._modified = true;
+        }
         return this._saveToStorage(replace);
     }
 
