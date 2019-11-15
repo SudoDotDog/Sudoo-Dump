@@ -9,7 +9,7 @@ import { AppendFunction, AsyncStorageReadFunction, AsyncStorageSaveFunction, Sto
 
 export class Dump<T extends any> {
 
-    public static create<T extends any>(unique: string, initial: T) {
+    public static create<T extends any>(unique: string, initial: T): Dump<T> {
 
         return new Dump<T>(unique, initial);
     }
@@ -100,7 +100,7 @@ export class Dump<T extends any> {
         return Medium.from(this._pile);
     }
 
-    public defineAppend(func: AppendFunction<T>) {
+    public defineAppend(func: AppendFunction<T>): this {
 
         this._appendFunction = func;
         return this;

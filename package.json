@@ -1,6 +1,6 @@
 {
   "name": "@sudoo/dump",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": ":ear_of_rice: A Dump of things",
   "main": "index.js",
   "directories": {
@@ -22,7 +22,7 @@
   "devDependencies": {
     "@sudoo/io": "^1.6.1",
     "@sudoo/mock": "^1.2.0",
-    "@sudoo/triforce": "^1.9.0"
+    "@sudoo/triforce": "^1.10.2"
   },
   "nyc": {
     "extension": [
