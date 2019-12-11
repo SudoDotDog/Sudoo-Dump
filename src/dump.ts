@@ -144,6 +144,13 @@ export class Dump<T extends any> {
         return this._saveToStorage(replace);
     }
 
+    public reset(): this {
+
+        this.replace(this._initial);
+        this._modified = false;
+        return this;
+    }
+
     private _saveToStorage(newValue: T): this {
 
         if (this._storageType === 'sync') {
