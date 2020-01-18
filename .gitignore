@@ -20,6 +20,9 @@ coverage
 # Build
 app
 
+# lock
+yarn.lock
+
 # nyc test coverage
 .nyc_output
 
