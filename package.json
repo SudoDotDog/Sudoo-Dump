@@ -1,6 +1,6 @@
 {
   "name": "@sudoo/dump",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": ":ear_of_rice: A Dump of things",
   "main": "index.js",
   "directories": {

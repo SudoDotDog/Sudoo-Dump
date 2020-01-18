@@ -50,7 +50,7 @@ export class Dump<T extends any> {
 
     private _pile: T;
     private _initial: T;
-    private _appendFunction?: AppendFunction<T>;
+    private _appendFunction?: AppendFunction<T, any>;
     private _storageType: 'async' | 'sync' | null;
 
     private _serializeFunction: SerializeFunction<T> = JSON.stringify;
@@ -141,13 +141,13 @@ export class Dump<T extends any> {
         return Medium.from(this._pile);
     }
 
-    public defineAppend(func: AppendFunction<T>): this {
+    public defineAppend<K extends any = any>(func: AppendFunction<T, K>): this {
 
         this._appendFunction = func;
         return this;
     }
 
-    public append(append: any): this {
+    public append<K extends any = any>(append: K): this {
 
         if (!this._appendFunction) {
             return this;

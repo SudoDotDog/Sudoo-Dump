@@ -5,5 +5,6 @@
  */
 
 export { AsyncDraftFunction, DraftFunction } from "@sudoo/immutable";
+export * from "./declare";
 export * from "./dump";
 
