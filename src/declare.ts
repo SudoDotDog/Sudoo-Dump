@@ -11,3 +11,6 @@ export type StorageReadFunction = (unique: string) => string | undefined | null;
 
 export type AsyncStorageSaveFunction = (unique: string, text: string) => Promise<any>;
 export type AsyncStorageReadFunction = (unique: string) => Promise<string | undefined | null>;
+
+export type SerializeFunction<T extends any = any> = (value: T) => string;
+export type DeserializeFunction<T extends any = any> = (raw: string) => T;

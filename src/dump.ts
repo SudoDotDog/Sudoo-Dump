@@ -5,7 +5,7 @@
  */
 
 import { AsyncDraftFunction, DraftFunction, Medium } from "@sudoo/immutable";
-import { AppendFunction, AsyncStorageReadFunction, AsyncStorageSaveFunction, StorageReadFunction, StorageSaveFunction } from "./declare";
+import { AppendFunction, AsyncStorageReadFunction, AsyncStorageSaveFunction, DeserializeFunction, SerializeFunction, StorageReadFunction, StorageSaveFunction } from "./declare";
 
 export class Dump<T extends any> {
 
@@ -53,6 +53,9 @@ export class Dump<T extends any> {
     private _appendFunction?: AppendFunction<T>;
     private _storageType: 'async' | 'sync' | null;
 
+    private _serializeFunction: SerializeFunction<T> = JSON.stringify;
+    private _deserializeFunction: DeserializeFunction<T> = JSON.parse;
+
     private constructor(unique: string, initial: T) {
 
         this._unique = unique;
@@ -98,7 +101,7 @@ export class Dump<T extends any> {
             return this;
         }
 
-        const parsed: T = JSON.parse(content);
+        const parsed: T = this._deserializeFunction(content);
         this._pile = parsed;
 
         this._initialed = new Date();
@@ -121,7 +124,7 @@ export class Dump<T extends any> {
             return this;
         }
 
-        const parsed: T = JSON.parse(content);
+        const parsed: T = this._deserializeFunction(content);
         this._pile = parsed;
 
         this._initialed = new Date();
@@ -164,6 +167,13 @@ export class Dump<T extends any> {
         return this.replace(newValue);
     }
 
+    public defineSerializeFunction(serialize: SerializeFunction<T>, deserialize: DeserializeFunction<T>): this {
+
+        this._serializeFunction = serialize;
+        this._deserializeFunction = deserialize;
+        return this;
+    }
+
     public replace(replace: T): this {
 
         this._pile = replace;
@@ -185,11 +195,11 @@ export class Dump<T extends any> {
         if (this._storageType === 'sync') {
 
             this._verifyStorage();
-            (Dump._storageSaveFunction as StorageSaveFunction)(this._unique, JSON.stringify(newValue));
+            (Dump._storageSaveFunction as StorageSaveFunction)(this._unique, this._serializeFunction(newValue));
         } else if (this._storageType === 'async') {
 
             this._verifyAsyncStorage();
-            (Dump._asyncStorageSaveFunction as AsyncStorageSaveFunction)(this._unique, JSON.stringify(newValue));
+            (Dump._asyncStorageSaveFunction as AsyncStorageSaveFunction)(this._unique, this._serializeFunction(newValue));
         }
 
         return this;
