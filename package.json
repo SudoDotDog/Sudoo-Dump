@@ -20,9 +20,9 @@
     "@sudoo/immutable": "^1.0.8"
   },
   "devDependencies": {
-    "@sudoo/io": "^1.6.1",
+    "@sudoo/io": "^1.6.2",
     "@sudoo/mock": "^1.2.0",
-    "@sudoo/triforce": "^2.0.4"
+    "@sudoo/triforce": "^2.1.0"
   },
   "nyc": {
     "extension": [
