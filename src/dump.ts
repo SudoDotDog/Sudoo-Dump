@@ -45,6 +45,9 @@ export class Dump<T extends any> {
     private _modified: boolean;
     private _restored: boolean;
 
+    private _initialed: Date;
+    private _lastModified: Date;
+
     private _pile: T;
     private _initial: T;
     private _appendFunction?: AppendFunction<T>;
@@ -56,6 +59,10 @@ export class Dump<T extends any> {
 
         this._pile = initial;
         this._initial = initial;
+
+        this._initialed = new Date();
+        this._lastModified = new Date();
+
         this._modified = false;
         this._restored = false;
         this._storageType = null;
@@ -73,6 +80,12 @@ export class Dump<T extends any> {
     public get restored(): boolean {
         return this._restored;
     }
+    public get initialed(): Date {
+        return this._initialed;
+    }
+    public get lastModified(): Date {
+        return this._lastModified;
+    }
 
     public useStorage(): this {
 
@@ -84,10 +97,16 @@ export class Dump<T extends any> {
         if (!content) {
             return this;
         }
+
         const parsed: T = JSON.parse(content);
         this._pile = parsed;
+
+        this._initialed = new Date();
+        this._lastModified = new Date();
+
         this._initial = parsed;
         this._restored = true;
+
         return this;
     }
 
@@ -101,10 +120,16 @@ export class Dump<T extends any> {
         if (!content) {
             return this;
         }
+
         const parsed: T = JSON.parse(content);
         this._pile = parsed;
+
+        this._initialed = new Date();
+        this._lastModified = new Date();
+
         this._initial = parsed;
         this._restored = true;
+
         return this;
     }
 
@@ -142,9 +167,9 @@ export class Dump<T extends any> {
     public replace(replace: T): this {
 
         this._pile = replace;
-        if (!this._modified) {
-            this._modified = true;
-        }
+        this._modified = true;
+        this._lastModified = new Date();
+
         return this._saveToStorage(replace);
     }
 
