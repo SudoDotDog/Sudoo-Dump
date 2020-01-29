@@ -5,7 +5,7 @@
  */
 
 import { AsyncDraftFunction, DraftFunction, Medium } from "@sudoo/immutable";
-import { AppendFunction, AsyncStorageReadFunction, AsyncStorageSaveFunction, DeserializeFunction, SerializeFunction, StorageReadFunction, StorageSaveFunction } from "./declare";
+import { AppendFunction, AsyncStorageReadFunction, AsyncStorageSaveFunction, DeserializeFunction, SerializeFunction, StorageReadFunction, StorageSaveFunction, UpdateList } from "./declare";
 
 export class Dump<T extends any> {
 
@@ -56,6 +56,8 @@ export class Dump<T extends any> {
     private _serializeFunction: SerializeFunction<T> = JSON.stringify;
     private _deserializeFunction: DeserializeFunction<T> = JSON.parse;
 
+    private readonly _updateList: UpdateList<T>;
+
     private constructor(unique: string, initial: T) {
 
         this._unique = unique;
@@ -69,6 +71,8 @@ export class Dump<T extends any> {
         this._modified = false;
         this._restored = false;
         this._storageType = null;
+
+        this._updateList = {};
     }
 
     public get value(): T {
