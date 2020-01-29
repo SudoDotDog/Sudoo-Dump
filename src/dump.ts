@@ -5,7 +5,7 @@
  */
 
 import { AsyncDraftFunction, DraftFunction, Medium } from "@sudoo/immutable";
-import { AppendFunction, AsyncStorageReadFunction, AsyncStorageSaveFunction, DeserializeFunction, SerializeFunction, StorageReadFunction, StorageSaveFunction, UpdateList } from "./declare";
+import { AppendFunction, AsyncStorageReadFunction, AsyncStorageSaveFunction, DeserializeFunction, SerializeFunction, StorageReadFunction, StorageSaveFunction, UpdateListener, UpdateListenerList } from "./declare";
 
 export class Dump<T extends any> {
 
@@ -56,7 +56,7 @@ export class Dump<T extends any> {
     private _serializeFunction: SerializeFunction<T> = JSON.stringify;
     private _deserializeFunction: DeserializeFunction<T> = JSON.parse;
 
-    private readonly _updateList: UpdateList<T>;
+    private _updateListenerList: UpdateListenerList<T>;
 
     private constructor(unique: string, initial: T) {
 
@@ -72,7 +72,7 @@ export class Dump<T extends any> {
         this._restored = false;
         this._storageType = null;
 
-        this._updateList = {};
+        this._updateListenerList = {};
     }
 
     public get value(): T {
@@ -92,6 +92,9 @@ export class Dump<T extends any> {
     }
     public get lastModified(): Date {
         return this._lastModified;
+    }
+    public get updateListeners(): UpdateListenerList {
+        return this._updateListenerList;
     }
 
     public useStorage(): this {
@@ -180,17 +183,62 @@ export class Dump<T extends any> {
 
     public replace(replace: T): this {
 
+        const oldValue: T = this._pile;
+
         this._pile = replace;
         this._modified = true;
         this._lastModified = new Date();
 
+        this._triggerUpdateListenerList(replace, oldValue);
         return this._saveToStorage(replace);
+    }
+
+    public addUpdateListener(identifier: string, listener: UpdateListener<T>): this {
+
+        this._updateListenerList = {
+            ...this._updateListenerList,
+            [identifier]: listener,
+        };
+        return this;
+    }
+
+    public removeUpdateListener(identifier: string): this {
+
+        const currentIdentifiers: string[] = Object.keys(this._updateListenerList);
+        const newListenerList: UpdateListenerList<T> = currentIdentifiers.reduce((previous: UpdateListenerList<T>, current: string) => {
+            if (current === identifier) {
+                return previous;
+            }
+            return {
+                ...previous,
+                [current]: this._updateListenerList[current],
+            };
+        }, {} as UpdateListenerList<T>);
+        this._updateListenerList = newListenerList;
+        return this;
+    }
+
+    public clearUpdateListeners(): this {
+
+        this._updateListenerList = {};
+        return this;
     }
 
     public reset(): this {
 
         this.replace(this._initial);
         this._modified = false;
+        return this;
+    }
+
+    private _triggerUpdateListenerList(newValue: T, oldValue: T): this {
+
+        const identifiers: string[] = Object.keys(this._updateListenerList);
+        for (const identifier of identifiers) {
+            if (this._updateListenerList[identifier]) {
+                this._updateListenerList[identifier](identifier, newValue, oldValue);
+            }
+        }
         return this;
     }
 

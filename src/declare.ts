@@ -16,4 +16,4 @@ export type SerializeFunction<T extends any = any> = (value: T) => string;
 export type DeserializeFunction<T extends any = any> = (raw: string) => T;
 
 export type UpdateListener<T extends any = any> = (identifier: string, newValue: T, oldValue: T) => void;
-export type UpdateList<T extends any = any> = Record<string, UpdateListener<T>>;
+export type UpdateListenerList<T extends any = any> = Record<string, UpdateListener<T>>;
