@@ -17,12 +17,12 @@
   },
   "homepage": "https://github.com/SudoDotDog/Sudoo-Dump#readme",
   "dependencies": {
-    "@sudoo/immutable": "^1.0.8"
+    "@sudoo/immutable": "^1.2.0"
   },
   "devDependencies": {
-    "@sudoo/io": "^1.6.2",
-    "@sudoo/mock": "^1.2.0",
-    "@sudoo/triforce": "^2.1.0"
+    "@sudoo/io": "^1.7.0",
+    "@sudoo/mock": "^1.3.0",
+    "@sudoo/triforce": "^2.2.1"
   },
   "nyc": {
     "extension": [
