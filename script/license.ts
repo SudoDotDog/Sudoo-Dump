@@ -20,6 +20,7 @@ const appPackage: any = {
     main: "index.js",
     version: parent.version,
     description: parent.description,
+    directories: parent.directories,
     repository: parent.repository,
     keywords: parent.keywords,
     author: parent.author,
@@ -27,6 +28,5 @@ const appPackage: any = {
     bugs: parent.bugs,
     homepage: parent.homepage,
     dependencies: parent.dependencies,
-    peerDependencies: parent.peerDependencies,
 };
 Fs.writeFileSync(Path.join(appPath, 'package.json'), JSON.stringify(appPackage, null, 2), 'utf8');
