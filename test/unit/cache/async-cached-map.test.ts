@@ -23,27 +23,7 @@ describe('Given {AsyncCachedMap} class', (): void => {
         expect(map).to.be.instanceOf(AsyncCachedMap);
     });
 
-    it('should be able to create and init - string', async (): Promise<void> => {
-
-        const key: string = chance.string();
-        const value: string = chance.string();
-
-        const map: AsyncCachedMap<string, string> = AsyncCachedMap.create<string, string>(
-            () => value,
-            {
-                [key]: value,
-            },
-        );
-
-        expect(map).to.be.instanceOf(AsyncCachedMap);
-        expect(map).to.be.lengthOf(1);
-
-        const actual: string = await map.get(key);
-
-        expect(actual).to.be.equal(value);
-    });
-
-    it('should be able to create and init - instance', async (): Promise<void> => {
+    it('should be able to create and init', async (): Promise<void> => {
 
         const key: Example = new Example(chance.string());
         const value: string = chance.string();

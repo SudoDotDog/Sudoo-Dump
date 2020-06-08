@@ -10,7 +10,7 @@ export class AsyncCachedMap<K extends any = string, V extends any = any> {
 
     public static create<K extends any = string, V extends any = any>(
         getterFunction: AsyncMapGetterFunction<K, V>,
-        initialMap?: Record<K, V> | Map<K, V>,
+        initialMap?: Map<K, V>,
     ) {
 
         return new AsyncCachedMap<K, V>(getterFunction, initialMap);
@@ -21,7 +21,7 @@ export class AsyncCachedMap<K extends any = string, V extends any = any> {
 
     private constructor(
         getterFunction: AsyncMapGetterFunction<K, V>,
-        initialMap?: Record<K, V> | Map<K, V>,
+        initialMap?: Map<K, V>,
     ) {
 
         this._map = new Map();
@@ -54,18 +54,10 @@ export class AsyncCachedMap<K extends any = string, V extends any = any> {
         return this;
     }
 
-    public merge(map: Record<K, V> | Map<K, V>): this {
+    public merge(map: Map<K, V>): this {
 
-        if (map instanceof Map) {
-            for (const key of map.keys()) {
-                this.set(key, map.get(key) as V);
-            }
-            return this;
-        }
-
-        for (const key of Object.keys(map)) {
-            const assertedKey: K = key as any as K;
-            this.set(assertedKey, map[assertedKey] as V);
+        for (const key of map.keys()) {
+            this.set(key, map.get(key) as V);
         }
         return this;
     }
