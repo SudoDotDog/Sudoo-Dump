@@ -60,7 +60,8 @@ export class AsyncCachedMap<K extends any = string, V extends any = any> {
         }
 
         for (const key of Object.keys(map)) {
-            this.set(key as any, map[key] as V);
+            const assertedKey: K = key as any as K;
+            this.set(assertedKey, map[assertedKey] as V);
         }
         return this;
     }
