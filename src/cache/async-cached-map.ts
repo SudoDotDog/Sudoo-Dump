@@ -32,6 +32,10 @@ export class AsyncCachedMap<K extends any = string, V extends any = any> {
         }
     }
 
+    public get length(): number {
+        return this._map.size;
+    }
+
     public async get(key: K): Promise<V> {
 
         if (this.check(key)) {
