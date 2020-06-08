@@ -28,15 +28,36 @@ export class AsyncCachedMap<K extends any = string, V extends any = any> {
 
     public async get(key: K): Promise<V> {
 
-        if (this._map.has(key)) {
-
+        if (this.check(key)) {
             return this._map.get(key) as V;
         }
 
-        const result: V = await this._getterFunction(key);
-        this._map.set(key, result);
+        const value: V = await this._getterFunction(key);
+        this.set(key, value);
 
-        return result;
+        return value;
+    }
+
+    public set(key: K, value: V): this {
+
+        this._map.set(key, value);
+        return this;
+    }
+
+    public check(key: K): boolean {
+
+        return this._map.has(key);
+    }
+
+    public remove(key: K): this {
+
+        this._map.delete(key);
+        return this;
+    }
+
+    public clear(): this {
+
+        this._map.clear();
+        return this;
     }
 }
-
