@@ -24,5 +24,60 @@ describe('Given {AsyncConditionedCache} class', (): void => {
         );
 
         expect(cache).to.be.instanceOf(AsyncConditionedCache);
+        expect(cache.cached).to.be.equal(value);
+    });
+
+    it('should be able to create and init', async (): Promise<void> => {
+
+        const value: string = chance.string();
+
+        const cache: AsyncConditionedCache<string> = await AsyncConditionedCache.createAndInit(
+            () => true,
+            () => value,
+        );
+
+        expect(cache).to.be.instanceOf(AsyncConditionedCache);
+        expect(cache.cached).to.be.equal(value);
+    });
+
+    it('should be able to get true conditioned value', async (): Promise<void> => {
+
+        const initialValue: string = chance.string();
+        const value: string = chance.string();
+
+        const cache: AsyncConditionedCache<string> = AsyncConditionedCache.create(
+            () => true,
+            () => value,
+            initialValue,
+        );
+
+        expect(cache).to.be.instanceOf(AsyncConditionedCache);
+        expect(cache.cached).to.be.equal(initialValue);
+
+        const current: string = await cache.get();
+
+        expect(cache.cached).to.be.equal(initialValue);
+        expect(current).to.be.equal(initialValue);
+    });
+
+
+    it('should be able to get false conditioned value', async (): Promise<void> => {
+
+        const initialValue: string = chance.string();
+        const value: string = chance.string();
+
+        const cache: AsyncConditionedCache<string> = AsyncConditionedCache.create(
+            () => false,
+            () => value,
+            initialValue,
+        );
+
+        expect(cache).to.be.instanceOf(AsyncConditionedCache);
+        expect(cache.cached).to.be.equal(initialValue);
+
+        const current: string = await cache.get();
+
+        expect(cache.cached).to.be.equal(value);
+        expect(current).to.be.equal(value);
     });
 });

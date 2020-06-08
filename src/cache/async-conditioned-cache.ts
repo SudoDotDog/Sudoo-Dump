@@ -42,6 +42,11 @@ export class AsyncConditionedCache<T extends any = any> {
         this._getterFunction = getterFunction;
     }
 
+    public get cached(): T {
+
+        return this._current;
+    }
+
     public async get(): Promise<T> {
 
         const validate: boolean = await this.check();
