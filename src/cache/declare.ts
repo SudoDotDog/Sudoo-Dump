@@ -4,4 +4,6 @@
  * @description Declare
  */
 
-export type GetterFunction<K, V> = (key: K) => Promise<V>;
+export type AsyncMapGetterFunction<K, V> = (key: K) => Promise<V> | V;
+export type AsyncConditionedGetterFunction<T> = (original: T) => Promise<T> | T;
+export type ConditionVerifyFunction<T> = (original: T) => boolean | Promise<boolean>;

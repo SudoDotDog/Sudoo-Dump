@@ -4,26 +4,32 @@
  * @description Async Cached Map
  */
 
-import { GetterFunction } from "./declare";
+import { AsyncMapGetterFunction } from "./declare";
 
 export class AsyncCachedMap<K extends any = string, V extends any = any> {
 
     public static create<K extends any = string, V extends any = any>(
-        getterFunction: GetterFunction<K, V>,
+        getterFunction: AsyncMapGetterFunction<K, V>,
+        initialMap?: Record<K, V> | Map<K, V>,
     ) {
 
-        return new AsyncCachedMap<K, V>(getterFunction);
+        return new AsyncCachedMap<K, V>(getterFunction, initialMap);
     }
 
     private readonly _map: Map<K, V>;
-    private readonly _getterFunction: GetterFunction<K, V>;
+    private readonly _getterFunction: AsyncMapGetterFunction<K, V>;
 
     private constructor(
-        getterFunction: GetterFunction<K, V>,
+        getterFunction: AsyncMapGetterFunction<K, V>,
+        initialMap?: Record<K, V> | Map<K, V>,
     ) {
 
         this._map = new Map();
         this._getterFunction = getterFunction;
+
+        if (initialMap) {
+            this.merge(initialMap);
+        }
     }
 
     public async get(key: K): Promise<V> {
@@ -32,7 +38,7 @@ export class AsyncCachedMap<K extends any = string, V extends any = any> {
             return this._map.get(key) as V;
         }
 
-        const value: V = await this._getterFunction(key);
+        const value: V = await Promise.resolve(this._getterFunction(key));
         this.set(key, value);
 
         return value;
@@ -41,6 +47,21 @@ export class AsyncCachedMap<K extends any = string, V extends any = any> {
     public set(key: K, value: V): this {
 
         this._map.set(key, value);
+        return this;
+    }
+
+    public merge(map: Record<K, V> | Map<K, V>): this {
+
+        if (map instanceof Map) {
+            for (const key of map.keys()) {
+                this.set(key, map.get(key) as V);
+            }
+            return this;
+        }
+
+        for (const key of Object.keys(map)) {
+            this.set(key as any, map[key] as V);
+        }
         return this;
     }
 
