@@ -9,6 +9,12 @@ import { AppendFunction, AsyncStorageReadFunction, AsyncStorageSaveFunction, Des
 
 export class Dump<T extends any> {
 
+    private static _storageSaveFunction?: StorageSaveFunction;
+    private static _storageReadFunction?: StorageReadFunction;
+
+    private static _asyncStorageSaveFunction?: AsyncStorageSaveFunction;
+    private static _asyncStorageReadFunction?: AsyncStorageReadFunction;
+
     public static create<T extends any>(unique: string, initial: T): Dump<T> {
 
         return new Dump<T>(unique, initial);
@@ -33,12 +39,6 @@ export class Dump<T extends any> {
         this._asyncStorageSaveFunction = save;
         this._asyncStorageReadFunction = read;
     }
-
-    private static _storageSaveFunction?: StorageSaveFunction;
-    private static _storageReadFunction?: StorageReadFunction;
-
-    private static _asyncStorageSaveFunction?: AsyncStorageSaveFunction;
-    private static _asyncStorageReadFunction?: AsyncStorageReadFunction;
 
     private readonly _unique: string;
 

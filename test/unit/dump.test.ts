@@ -61,6 +61,7 @@ describe('Given {Dump} class', (): void => {
         const value: string = chance.string();
         const draft: string = chance.string();
 
+        // eslint-disable-next-line @typescript-eslint/require-await
         Dump.defineAsyncStorage(async (_, text: string) => change = text, async () => change);
         const dump: Dump<string> = await Dump.create(chance.string(), value).useAsyncStorage();
 
@@ -90,7 +91,8 @@ describe('Given {Dump} class', (): void => {
         const dump: Dump<string> = Dump.create(chance.string(), value);
 
         expect(dump.value).to.be.equal(value);
-        // tslint:disable-next-line: no-unused-expression
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(dump.modified).to.be.false;
     });
 
@@ -103,7 +105,8 @@ describe('Given {Dump} class', (): void => {
         dump.replace(newValue);
 
         expect(dump.value).to.be.equal(newValue);
-        // tslint:disable-next-line: no-unused-expression
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(dump.modified).to.be.true;
     });
 });

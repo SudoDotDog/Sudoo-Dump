@@ -11,7 +11,7 @@ export class AsyncCachedMap<K extends any = string, V extends any = any> {
     public static create<K extends any = string, V extends any = any>(
         getterFunction: AsyncMapGetterFunction<K, V>,
         initialMap?: Map<K, V>,
-    ) {
+    ): AsyncCachedMap<K, V> {
 
         return new AsyncCachedMap<K, V>(getterFunction, initialMap);
     }
