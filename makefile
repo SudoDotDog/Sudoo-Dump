@@ -8,8 +8,6 @@ ts_node := node_modules/.bin/ts-node
 mocha := node_modules/.bin/mocha
 eslint := node_modules/.bin/eslint
 
-.IGNORE: clean-linux
-
 main: dev
 
 dev:
@@ -54,17 +52,14 @@ license: clean
 	@echo "[INFO] Sign files"
 	@NODE_ENV=development $(ts_node) script/license.ts
 
-clean: clean-linux
+clean:
 	@echo "[INFO] Cleaning release files"
 	@NODE_ENV=development $(ts_node) script/clean-app.ts
 
-clean-linux:
-	@echo "[INFO] Cleaning dist files"
-	@rm -rf dist
-	@rm -rf dist_script
-	@rm -rf .nyc_output
-	@rm -rf coverage
-
-publish: install tests license build
+publish: install lint tests license build
 	@echo "[INFO] Publishing package"
 	@cd app && npm publish --access=public
+
+publish-dry-run: install lint tests license build
+	@echo "[INFO] Publishing package"
+	@cd app && npm publish --access=public --dry-run
