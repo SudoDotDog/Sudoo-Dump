@@ -7,6 +7,14 @@
 
 :ear_of_rice: A Dump of things
 
+## Install
+
+```sh
+yarn add @sudoo/dump
+# Or
+npm install @sudoo/dump --save
+```
+
 ## Usage
 
 ```ts
